@@ -16,7 +16,7 @@ by Qiming Hu, Xiaojie Guo.
 
 #### 3.1. Training dataset
 * 485 low/high-light image pairs from our485 of [LOL dataset](https://daooshee.github.io/BMVC2018website/), each low image of which is augmented by our [exposure_augment.py](https://github.com/mingcv/Bread/blob/main/exposure_augment.py) to generate 8 images under different exposures.
-* 559 randomly-selected multi-exposure sequences from [SICE](https://github.com/csjcai/SICE) are adopted to train the MECAN (if it is desired).
+* To train the MECAN (if it is desired), 559 randomly-selected multi-exposure sequences from [SICE](https://github.com/csjcai/SICE) are adopted.
 
 #### 3.2. Tesing dataset
 The images for testing can be downloaded in [this link](https://github.com/mingcv/Bread/releases/download/checkpoints/data.zip).
