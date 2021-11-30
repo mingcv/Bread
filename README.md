@@ -8,29 +8,49 @@ by Qiming Hu, Xiaojie Guo.
 * NVIDIA GPU+CUDA
 
 ### Network Architecture
-![figure_arch](https://github.com/mingcv/YTMT-Strategy/blob/main/figures/figure_ytmt_networks_final.png)
+![figure_arch](https://github.com/mingcv/Bread/blob/main/figures/Bread_architecture_full.png)
 
 ### Data Preparation
 
 #### Training dataset
-* 7,643 images from the
-  [Pascal VOC dataset](http://host.robots.ox.ac.uk/pascal/VOC/), center-cropped as 224 x 224 slices to synthesize training pairs.
-* 90 real-world training pairs provided by [Zhang *et al.*](https://github.com/ceciliavision/perceptual-reflection-removal)
+* 485 low/high-light image pairs from our485 of [LOL dataset](https://daooshee.github.io/BMVC2018website/), each low image of which is augmented by our [exposure_augment.py](https://github.com/mingcv/Bread/blob/main/exposure_augment.py) to generate 8 images under different exposures.
+* 559 randomly-selected multi-exposure sequences from [SICE](https://github.com/csjcai/SICE) are adopted to train the MECAN (if it is desired).
 
 #### Tesing dataset
-* 45 real-world testing images from [CEILNet dataset](https://github.com/fqnchina/CEILNet).
-* 20 real testing pairs provided by [Zhang *et al.*](https://github.com/ceciliavision/perceptual-reflection-removal)
-* 454 real testing pairs from [SIR^2 dataset](https://sir2data.github.io/), containing three subsets (i.e., Objects (200), Postcard (199), Wild (55)). 
+The images for testing can be downloaded in [this link](https://github.com/mingcv/Bread/releases/download/checkpoints/data.zip).
+
+<!-- * 15 low/high-light image pairs from eval15 of [LOL dataset](https://daooshee.github.io/BMVC2018website/).
+* 44 low-light images from DICM.
+* 8 low-light images from NPE.
+* 24 low-light images from VV. -->
 
 ### Usage
 
 #### Training 
-* For stage 1: ```python train_sirs.py --inet ytmt_ucs --model ytmt_model_sirs --name ytmt_ucs_sirs --hyper --if_align```
-* For stage 2: ```python train_twostage_sirs.py --inet ytmt_ucs --model twostage_ytmt_model --name ytmt_uct_sirs --hyper --if_align --resume --resume_epoch xx --checkpoints_dir xxx```
+* Multi-exposure data synthesis: ```python exposure_augment.py```
+* Train IAN: ```python train_IAN.py -m IAN --comment IAN_train --batch_size 1 --val_interval 1 --num_epochs 500 --lr 0.001 --no_sche```
+* Train ANSN: ```python train_ANSN.py -m1 IAN -m2 ANSN --comment ANSN_train --batch_size 1 --val_interval 1 --num_epochs 500 --lr 0.001 --no_sche -m1w ./checkpoints/IAN_335.pth```
+* Train CAN: ```python train_CAN.py -m1 IAN -m3 FuseNet --comment CAN_train --batch_size 1 --val_interval 1 --num_epochs 500 --lr 0.001 --no_sche -m1w ./checkpoints/IAN_335.pth```
+* Train MECAN on SICE: ```python train_MECAN.py -m FuseNet --comment MECAN_train --batch_size 1 --val_interval 1 --num_epochs 500 --lr 0.001 --no_sche```
+* Finetune MECAN on SICE and LOL datasets:  ```python train_MECAN_finetune.py -m FuseNet --comment MECAN_finetune --batch_size 1 --val_interval 1 --num_epochs 500 --lr 1e-4 --no_sche -mw ./checkpoints/FuseNet_MECAN_for_Finetuning_404.pth```
 
 #### Testing 
-```python test_sirs.py --inet ytmt_ucs --model twostage_ytmt_model --name ytmt_uct_sirs_test --hyper --if_align --resume --icnn_path ./checkpoints/ytmt_uct_sirs/twostage_unet_68_077_00595364.pt```
+* *\[Tips\]: Using gamma correction for evaluation with parameter --gc; Show extra intermediate outputs with parameter --save_extra*
+* Evaluation: ```python eval_Bread.py -m1 IAN -m2 ANSN -m3 FuseNet -m4 FuseNet --mef --comment Bread+NFM+ME[eval] --batch_size 1 -m1w ./checkpoints/IAN_335.pth -m2w ./checkpoints/ANSN_422.pth -m3w ./checkpoints/FuseNet_MECAN_251.pth -m4w ./checkpoints/FuseNet_NFM_297.pth```
+* Testing: ```python test_Bread.py -m1 IAN -m2 ANSN -m3 FuseNet -m4 FuseNet --mef --comment Bread+NFM+ME[test] --batch_size 1 -m1w ./checkpoints/IAN_335.pth -m2w ./checkpoints/ANSN_422.pth -m3w ./checkpoints/FuseNet_MECAN_251.pth -m4w ./checkpoints/FuseNet_NFM_297.pth```
+* Remove NFM: ```python test_Bread_NoNFM.py -m1 IAN -m2 ANSN -m3 FuseNet --mef -a 0.10 --comment Bread+ME[test] --batch_size 1 -m1w ./checkpoints/IAN_335.pth -m2w ./checkpoints/ANSN_422.pth -m3w ./checkpoints/FuseNet_MECAN_251.pth```
 
 #### Trained weights
-[Google Drive](https://drive.google.com/file/d/1yOKFzhhFUdbKzU3eafYKFLN7AdHqW4_7/view?usp=sharing)
+Please refer to [our release](https://github.com/mingcv/Bread/releases/tag/checkpoints). 
 
+### Quantitative comparison on eval15
+![table_eval](https://github.com/mingcv/Bread/blob/main/figures/table_eval.png)
+
+### Visual comparison on eval15
+![figure_eval](https://github.com/mingcv/Bread/blob/main/figures/figure_eval.png)
+
+### Visual comparison on DICM
+![figure_test_dicm](https://github.com/mingcv/Bread/blob/main/figures/figure_test_dicm.png)
+
+### Visual comparison on VV and MEF-DS
+![figure_test_vv_mefds](https://github.com/mingcv/Bread/blob/main/figures/figure_test_vv_mefds.png)
