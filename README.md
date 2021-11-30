@@ -1,7 +1,7 @@
 ## [Low-light Image Enhancement via Breaking Down the Darkness](#)
 by Qiming Hu, Xiaojie Guo.
 
-![figure_tease](https://github.com/mingcv/Bread/blob/main/figures/figure_tease.png)
+<!-- ![figure_tease](https://github.com/mingcv/Bread/blob/main/figures/figure_tease.png) -->
 
 ### 1. Dependencies
 * Python3
