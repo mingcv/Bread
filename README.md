@@ -1,7 +1,10 @@
 ## [Low-light Image Enhancement via Breaking Down the Darkness](https://arxiv.org/abs/2111.15557)
-by Xiaojie Guo, Qiming Hu.
+by Xiaojie Guo, Qiming Hu. 
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/mingcv/Bread/blob/main/bread_demo_uploader.ipynb) (Online Demo)
+:boom: **Update** Online Replicate Demo: [![Replicate](https://img.shields.io/static/v1?label=Replicate&message=Bread&color=green
+)](https://replicate.com/mingcv/bread)
+
+▶️ Online Colab Demo: [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/mingcv/Bread/blob/main/bread_demo_uploader.ipynb)  
 
 <!-- ![figure_tease](https://github.com/mingcv/Bread/blob/main/figures/figure_tease.png) --> 
 
