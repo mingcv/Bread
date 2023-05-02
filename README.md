@@ -8,7 +8,7 @@ by Xiaojie Guo, Qiming Hu.
 
 <!-- ![figure_tease](https://github.com/mingcv/Bread/blob/main/figures/figure_tease.png) --> 
 
-📖 Paper: [[arxiv](https://arxiv.org/abs/2111.15557)] [[IJCV](https://link.springer.com/article/10.1007/s11263-022-01667-9)]
+📖 Papers: [[arxiv](https://arxiv.org/abs/2111.15557)] [[IJCV](https://link.springer.com/article/10.1007/s11263-022-01667-9)]
 ### 1. Dependencies
 * Python3
 * PyTorch>=1.0
